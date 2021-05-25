@@ -9,7 +9,7 @@ snake[0] = {
 
 }
 
-let direcao = "right";
+let direcao = "direita";
 
 //Criação do Background
 function criarBG() {
@@ -25,8 +25,26 @@ function criarCobrinha() {
     }
 }
 
+document.addEventListener('keydown', update);
+
+//Implementação das movimentações
+function update(event) {
+    
+    if(event.keyCode == 37 && direcao != "direita") direcao = "esquerda";
+    if(event.keyCode == 38 && direcao != "baixo") direcao = "cima";
+    if(event.keyCode == 39 && direcao != "esquerda") direcao = "direita";
+    if(event.keyCode == 40 && direcao != "cima") direcao = "baixo"
+    
+}
+
 //Função de iniciar o jogo
 function iniciarJogo() {
+
+    if(snake[0].x > 15 * box && direcao == "direita") snake[0].x = 0;
+    if(snake[0].x < 0 && direcao == "esquerda") snake[0].x = 16 * box;
+    if(snake[0].y > 15 * box && direcao == "baixo") snake[0].y = 0;
+    if(snake[0].y < 0 && direcao == "cima") snake[0].y = 16 * box;
+
     criarBG();
     criarCobrinha();
 
@@ -34,13 +52,14 @@ function iniciarJogo() {
     let snakeY = snake[0].y;
 
     //Criação das direções da cobrinha
-    if(direcao == "right") snakeX += box;
-    if(direcao  == "left") snakeX -= box;
-    if(direcao  == "up") snakeY -= box;
-    if(direcao == "down") snakeY += box;
+    if(direcao == "direita") snakeX += box;
+    if(direcao  == "esquerda") snakeX -= box;
+    if(direcao  == "cima") snakeY -= box;
+    if(direcao == "baixo") snakeY += box;
 
     snake.pop();
 
+    //Criacao de novas cabeças
     let novaCabeca = {
         x: snakeX,
         y:snakeY
@@ -48,8 +67,8 @@ function iniciarJogo() {
 
     snake.unshift(novaCabeca);
 
-
 }
 
 //Função de intervalo para início e continuidade do jogo
 let jogo = setInterval(iniciarJogo, 100);
+
