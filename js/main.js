@@ -49,11 +49,21 @@ function update(event) {
 
 //Função de iniciar o jogo
 function iniciarJogo() {
+    
+       
     //transposicao de tela (passar de um lado para o outro)
     if(snake[0].x > 15 * box && direcao == "direita") snake[0].x = 0;
     if(snake[0].x < 0 && direcao == "esquerda") snake[0].x = 16 * box;
     if(snake[0].y > 15 * box && direcao == "baixo") snake[0].y = 0;
     if(snake[0].y < 0 && direcao == "cima") snake[0].y = 16 * box;
+
+    //Implementação da verificação do choque do corpo
+    for(i = 1; i < snake.length; i++) {
+        if(snake[0].x == snake[i].x && snake[0].y == snake[i].y) {
+            clearInterval(jogo);
+            alert("Game Over! :( ")
+        }
+    }
 
     criarBG();
     criarCobrinha();
@@ -68,7 +78,14 @@ function iniciarJogo() {
     if(direcao  == "cima") snakeY -= box;
     if(direcao == "baixo") snakeY += box;
 
-    snake.pop();
+    if(snakeX != comida.x || snakeY != comida.y) {
+        snake.pop();
+    } else {
+        comida.x = Math.floor(Math.random() * 15 + 1) * box;
+        comida.y = Math.floor(Math.random() * 15 + 1) * box;
+    }
+
+    
 
     //Criacao de novas cabeças
     let novaCabeca = {
